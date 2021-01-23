@@ -1,0 +1,9 @@
+For the record and future me, this is what needs to be done to disable Traefik during initial setup:
+
+Remove traefik helm chart resource: kubectl -n kube-system delete helmcharts.helm.cattle.io traefik
+Stop the k3s service: sudo service k3s stop
+Edit service file sudo nano /etc/systemd/system/k3s.service and add this line to ExecStart:
+    --no-deploy traefik \
+Reload the service file: sudo systemctl daemon-reload
+Remove the manifest file from auto-deploy folder: sudo rm /var/lib/rancher/k3s/server/manifests/traefik.yaml
+Start the k3s service: sudo service k3s start
